@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "OrderCreated",
+  "namespace": "com.example.avro",
+  "fields": [
+    {"name": "orderId", "type": "string"},
+    {"name": "customerId", "type": "string"},
+    {"name": "amount", "type": "double"},
+    {"name": "note", "type": ["null", "string"], "default": null}
+  ]
+}

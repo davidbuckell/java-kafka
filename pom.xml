@@ -1,0 +1,37 @@
+<!-- kafka-avro-demo/pom.xml -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.example</groupId>
+    <artifactId>kafka-avro-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging> <!-- Q: why is this pom and the child pom.xml jar?  -->
+
+    <properties>
+        <java.version>17</java.version>
+        <spring.boot.version>3.3.5</spring.boot.version>
+        <avro.version>1.11.4</avro.version>
+        <!-- Align with your Confluent Platform 7.4.x images -->
+        <confluent.version>7.4.4</confluent.version>
+    </properties>
+
+    <modules> <!-- Q: what are modules used for? Similar to NestJS?  -->
+        <module>avro-schema</module>
+        <module>orders-producer</module>
+        <module>orders-consumer</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version> <!-- Q: where is this being retrieved from?  -->
+                <type>pom</type> <!-- Q: are type and packaging properties related?  -->
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
