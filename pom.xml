@@ -7,7 +7,7 @@
     <groupId>com.example</groupId>
     <artifactId>kafka-avro-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging> <!-- Q: why is this pom and the child pom.xml jar?  -->
+    <packaging>pom</packaging> <!-- Q: why is this pom and the child pom.xml jar?  -->  <!-- A: Because this POM is an aggregator + parent, not something that produces a JAR. -->
 
     <properties>
         <java.version>17</java.version>
@@ -17,11 +17,19 @@
         <confluent.version>7.4.4</confluent.version>
     </properties>
 
-    <modules> <!-- Q: what are modules used for? Similar to NestJS?  -->
+    <modules> <!-- Q: what are modules used for? Similar to NestJS?  --> <!-- A: Tell maven these are separate projects that should be built together. Enables shared versioning, shared dependency management & ordered builds -->
         <module>avro-schema</module>
         <module>orders-producer</module>
         <module>orders-consumer</module>
     </modules>
+
+    <repositories>
+        <repository>
+            <id>confluent</id>
+            <name>Confluent Maven Repository</name>
+            <url>https://packages.confluent.io/maven/</url>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -29,9 +37,25 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version> <!-- Q: where is this being retrieved from?  -->
-                <type>pom</type> <!-- Q: are type and packaging properties related?  -->
+                <type>pom</type> <!-- Q: are type and packaging properties related?  --> <!-- A: Yes, but different contexts. packaging = what this modules produces, type = what kind of artifact is being consumed -->
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.11.0</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 </project>
