@@ -15,6 +15,7 @@
         <avro.version>1.11.4</avro.version>
         <!-- Align with your Confluent Platform 7.4.x images -->
         <confluent.version>7.4.4</confluent.version>
+        <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
 
     <modules> <!-- Q: what are modules used for? Similar to NestJS?  --> <!-- A: Tell maven these are separate projects that should be built together. Enables shared versioning, shared dependency management & ordered builds -->
@@ -40,6 +41,13 @@
                 <type>pom</type> <!-- Q: are type and packaging properties related?  --> <!-- A: Yes, but different contexts. packaging = what this modules produces, type = what kind of artifact is being consumed -->
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -54,8 +62,27 @@
                         <release>${java.version}</release>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${spring.boot.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0-M9</version>
+                    <configuration>
+                        <failIfNoTests>false</failIfNoTests>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
